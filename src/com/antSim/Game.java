@@ -14,14 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
 import java.util.Random;
+import javax.swing.Timer;
 
 public class Game extends JPanel implements ActionListener {
   
+  private final int DELAY = 140;
+
   private int antX;
   private int antY;
   private int antSpeed = 16;
   private Image ant;
   private Map<Integer, ArrayList<Integer>> colony = new HashMap<>();
+  private Timer timer;
 
   public Game() {
     initGame();
@@ -34,6 +38,9 @@ public class Game extends JPanel implements ActionListener {
 
     createColonyAnts();
     loadImages();
+
+    timer = new Timer(DELAY, this);
+    timer.start();
   }
 
   @Override
@@ -44,9 +51,7 @@ public class Game extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    // TODO Auto-generated method stub
-    System.out.println(e);
-
+    colonyUpdate();
     repaint();
   }
 
@@ -101,7 +106,21 @@ public class Game extends JPanel implements ActionListener {
     ant = iia.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
   }
 
+  private void colonyUpdate() {
+    for (int index = 0; index < colony.size(); index++){
+      ArrayList<Integer> colonyAnt = colony.get(index);
+      int oldColonyAntX = colonyAnt.get(0);
+      int oldColonyAntY = colonyAnt.get(1);
+     
+      Random rand = new Random();
+      int upperbound = 2;
 
+      int colonyAntX = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntX);
+      int colonyAntY = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntY);
+
+      colony.put(index, new ArrayList<Integer>(Arrays.asList(colonyAntX, colonyAntY)));
+    }
+  }
 
   private class KeyHandler extends KeyAdapter {
     @Override
@@ -120,22 +139,6 @@ public class Game extends JPanel implements ActionListener {
       if (key == KeyEvent.VK_LEFT && (antX - antSpeed) >= -16) {
         antX -= antSpeed;
       }  
-
-      for (int index = 0; index < colony.size(); index++){
-        ArrayList<Integer> colonyAnt = colony.get(index);
-        int oldColonyAntX = colonyAnt.get(0);
-        int oldColonyAntY = colonyAnt.get(1);
-       
-        Random rand = new Random();
-        int upperbound = 2;
-
-        int colonyAntX = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntX);
-        int colonyAntY = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntY);
-  
-        colony.put(index, new ArrayList<Integer>(Arrays.asList(colonyAntX, colonyAntY)));
-      }
-      
-      repaint();
     }
   }
 }
