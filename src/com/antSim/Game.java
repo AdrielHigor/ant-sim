@@ -71,35 +71,66 @@ public class Game extends JPanel implements ActionListener {
     }
   }
 
+  private int getNewColonyAntPosition(int direction, int oldPosition) {
+    int newPos = 0;
+
+    switch (direction) {
+      case 0:
+        if ((oldPosition + antSpeed) <= 434) {
+          newPos = oldPosition + antSpeed;
+        } else {
+          newPos = oldPosition;
+        }
+        break;
+      case 1:
+        if ((oldPosition - antSpeed) >= -16) {
+          newPos = oldPosition - antSpeed;
+        } else {
+          newPos = oldPosition;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return newPos;
+  }
+
   private void loadImages() {
     ImageIcon iia = new ImageIcon("src/assets/ant.png");
     ant = iia.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
   }
+
+
 
   private class KeyHandler extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e){
       int key = e.getKeyCode();
 
-      if (key == KeyEvent.VK_RIGHT) {
+      if (key == KeyEvent.VK_RIGHT && (antX + antSpeed) <= 434) {
         antX += antSpeed;
       }  
-      if (key == KeyEvent.VK_UP) {
+      if (key == KeyEvent.VK_UP && (antY - antSpeed) >= -16) {
         antY -= antSpeed;
       }    
-      if (key == KeyEvent.VK_DOWN) {
+      if (key == KeyEvent.VK_DOWN && antY + antSpeed <= 434) {
         antY += antSpeed;
       }    
-      if (key == KeyEvent.VK_LEFT) {
+      if (key == KeyEvent.VK_LEFT && (antX - antSpeed) >= -16) {
         antX -= antSpeed;
       }  
 
       for (int index = 0; index < colony.size(); index++){
+        ArrayList<Integer> colonyAnt = colony.get(index);
+        int oldColonyAntX = colonyAnt.get(0);
+        int oldColonyAntY = colonyAnt.get(1);
+       
         Random rand = new Random();
-        int upperbound = 450;
+        int upperbound = 2;
 
-        int colonyAntX = rand.nextInt(upperbound);
-        int colonyAntY = rand.nextInt(upperbound);
+        int colonyAntX = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntX);
+        int colonyAntY = getNewColonyAntPosition(rand.nextInt(upperbound), oldColonyAntY);
   
         colony.put(index, new ArrayList<Integer>(Arrays.asList(colonyAntX, colonyAntY)));
       }
