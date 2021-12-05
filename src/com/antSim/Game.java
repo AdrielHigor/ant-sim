@@ -18,7 +18,7 @@ import javax.swing.Timer;
 
 public class Game extends JPanel implements ActionListener {
   
-  private final int DELAY = 140;
+  private final int DELAY = (1000/8);
 
   private int antX;
   private int antY;
