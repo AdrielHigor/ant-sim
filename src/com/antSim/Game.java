@@ -20,6 +20,7 @@ public class Game extends JPanel implements ActionListener {
   
   private final int DELAY = (1000/8);
 
+  private int colonyPopulation = 5;
   private int antX;
   private int antY;
   private int antSpeed = 16;
@@ -70,7 +71,7 @@ public class Game extends JPanel implements ActionListener {
   private void createColonyAnts() {
     int index = 0;
 
-    while (index < 5) {
+    while (index < colonyPopulation) {
       colony.put(index, new ArrayList<Integer>(Arrays.asList(0, 0)));
       index ++;
     }
