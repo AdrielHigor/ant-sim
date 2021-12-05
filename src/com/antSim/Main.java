@@ -14,7 +14,7 @@ public class Main extends JFrame{
 
     setResizable(false);
     setSize(450, 450);
-    setTitle("Sim Ant");
+    setTitle("Ant Sim");
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
